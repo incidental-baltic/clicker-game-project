@@ -1,0 +1,1 @@
+This code does not run on version earlier than python 3.12 due to syntax differences in f strings.
