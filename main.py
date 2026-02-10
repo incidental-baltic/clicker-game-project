@@ -16,12 +16,12 @@ income_check_delay = 2500
 capitalist_duration = 10000
 dollar_spawn_interval = 120000
 
-#constants for legacy and research for upgrades
+#constants for ascension and research for upgrades
 max_upgrade_level = 10
 research_mpc_multiplier = 0.1
 research_mps_multiplier = 0.1
-legacy_mps_multiplier = 0.2
-legacy_mpc_multiplier = 0.2
+ascension_mps_multiplier = 0.2
+ascension_mpc_multiplier = 0.2
 
 #list of money requirements for the money achievements
 money_achievements = [10**6,10**20,10**100]
@@ -55,9 +55,9 @@ window.geometry("1000x1000")
 #function to recalculate how much money you should be getting per click or per second. updates every time mpc or mps should change
 def recalculate_mpc_mps(n):
     if n == 'mpc':
-        Dc.money_per_click['mpc']= ((Dc.money_per_click['mpc_count'] * Dc.money_per_click['mpc_multiplier'])**Dc.realms['mpc_power'])*((1+(research_mpc_multiplier*Dc.research['research_mpc_upgrade']))*(1+(legacy_mpc_multiplier*Dc.legacy['legacy_mps_upgrade'])))
+        Dc.money_per_click['mpc']= ((Dc.money_per_click['mpc_count'] * Dc.money_per_click['mpc_multiplier'])**Dc.realms['mpc_power'])*((1+(research_mpc_multiplier*Dc.research['research_mpc_upgrade']))*(1+(ascension_mpc_multiplier*Dc.ascension['ascension_mps_upgrade']))*((Dc.research['research']/100)+1))
     if n == 'mps':
-        Dc.money_per_second['mps']= ((Dc.money_per_second['mps_count'] * Dc.money_per_second['mps_multiplier'])**Dc.realms['mps_power'])*((1+(research_mps_multiplier*Dc.research['research_mps_upgrade']))*(1+(legacy_mps_multiplier*Dc.legacy['legacy_mps_upgrade'])))
+        Dc.money_per_second['mps']= ((Dc.money_per_second['mps_count'] * Dc.money_per_second['mps_multiplier'])**Dc.realms['mps_power'])*((1+(research_mps_multiplier*Dc.research['research_mps_upgrade']))*(1+(ascension_mps_multiplier*Dc.ascension['ascension_mps_upgrade']))*((Dc.research['research']/100)+1))
 
 
 def format_money(value):
@@ -323,46 +323,46 @@ def mps_index():
     menu_var.set("Shop")
     recalculate_mpc_mps('mps')
 
-#functions that a needed for the legacy system to work.
-def legacy_check():
-    if Dc.money['total_money_made']>=Dc.legacy['legacy_price']:
-        Dc.legacy['legacy_total']+=1
-        Dc.legacy['legacies']+=1
-    Dc.legacy['legacy_price']=(10**12)*(2**Dc.legacy['legacy_total'])
-    clicker_dict['legacy'].configure(text=f"you have {Dc.legacy['legacies']} legacies available")
-    clicker_dict['legacy'].update()
+#functions that a needed for the ascension system to work.
+def ascension_check():
+    if Dc.money['total_money_made']>=Dc.ascension['ascension_price']:
+        Dc.ascension['ascension_total']+=1
+        Dc.ascension['ascensions']+=1
+    Dc.ascension['ascension_price']=(10**12)*(2**Dc.ascension['ascension_total'])
+    clicker_dict['ascension'].configure(text=f"you have {Dc.ascension['ascensions']} ascensions available")
+    clicker_dict['ascension'].update()
 
-def legacy_world():
-    menu_var.set('legacy')
+def ascension_world():
+    menu_var.set('ascension')
     widgets["menu"].place_forget()
-    legacy_dict['legacy_count'].configure(text=f"you have {Dc.legacy['legacies']} legacy points available")
-    legacy_dict['legacy_count'].update()
+    ascension_dict['ascension_count'].configure(text=f"you have {Dc.ascension['ascensions']} ascension points available")
+    ascension_dict['ascension_count'].update()
 
 def lupers(n):
-    if n==1 and Dc.legacy['legacy_mpc_upgrade_price']<=10:
-        if Dc.legacy['legacies']>=Dc.legacy['legacy_mpc_upgrade_price']:
-            Dc.legacy['legacies']-=Dc.legacy['legacy_mpc_upgrade_price']
-            Dc.legacy['legacy_mps_upgrade']+=1
-            Dc.legacy['legacy_mpc_upgrade_price']=Dc.legacy['legacy_mps_upgrade']+1
-            if Dc.legacy['legacy_mps_upgrade'] <= 10:
-                legacy_dict['legacy upg1'].configure(text=f"you have {Dc.legacy['legacy_mps_upgrade']} of this \n this will cost {Dc.legacy['legacy_mpc_upgrade_price']}\n this gives a {1+(Dc.legacy['legacy_mps_upgrade']/5)}x boost to mpc")
-                legacy_dict['legacy upg1'].update()
-            if Dc.legacy['legacy_mps_upgrade'] == 10:
-                legacy_dict['legacy upg1'].configure(text=f"you have the\n max amount of this\n this gives a 3x boost to mpc")
-                legacy_dict['legacy upg1'].update()
-    if n==2 and Dc.legacy['legacy_mps_upgrade_price']<=10:
-        if Dc.legacy['legacies']>=Dc.legacy['legacy_mps_upgrade_price']:
-            Dc.legacy['legacies']-=Dc.legacy['legacy_mps_upgrade_price']
-            Dc.legacy['legacy_mps_upgrade']+=1
-            Dc.legacy['legacy_mps_upgrade_price']=Dc.legacy['legacy_mps_upgrade']+1
-            if Dc.legacy['legacy_mps_upgrade'] <= 10:
-                legacy_dict['legacy upg2'].configure(text=f"you have {Dc.legacy['legacy_mps_upgrade']} of this \n this will cost {Dc.legacy['legacy_mps_upgrade_price']}\n this gives a {1+(Dc.legacy['legacy_mps_upgrade']/5)}x boost to mpc")
-                legacy_dict['legacy upg2'].update()
-            if Dc.legacy['legacy_mps_upgrade'] == 10:
-                legacy_dict['legacy upg2'].configure(text=f"you have the\n max amount of this\n this gives a 3x boost to mps")
-                legacy_dict['legacy upg2'].update()
-    legacy_dict['legacy_count'].configure(text=f"you have {Dc.legacy['legacies']} legacy points available")
-    legacy_dict['legacy_count'].update()
+    if n==1 and Dc.ascension['ascension_mpc_upgrade_price']<=10:
+        if Dc.ascension['ascensions']>=Dc.ascension['ascension_mpc_upgrade_price']:
+            Dc.ascension['ascensions']-=Dc.ascension['ascension_mpc_upgrade_price']
+            Dc.ascension['ascension_mps_upgrade']+=1
+            Dc.ascension['ascension_mpc_upgrade_price']=Dc.ascension['ascension_mps_upgrade']+1
+            if Dc.ascension['ascension_mps_upgrade'] <= 10:
+                ascension_dict['ascension upg1'].configure(text=f"you have {Dc.ascension['ascension_mps_upgrade']} of this \n this will cost {Dc.ascension['ascension_mpc_upgrade_price']}\n this gives a {1+(Dc.ascension['ascension_mps_upgrade']/5)}x boost to mpc")
+                ascension_dict['ascension upg1'].update()
+            if Dc.ascension['ascension_mps_upgrade'] == 10:
+                ascension_dict['ascension upg1'].configure(text=f"you have the\n max amount of this\n this gives a 3x boost to mpc")
+                ascension_dict['ascension upg1'].update()
+    if n==2 and Dc.ascension['ascension_mps_upgrade_price']<=10:
+        if Dc.ascension['ascensions']>=Dc.ascension['ascension_mps_upgrade_price']:
+            Dc.ascension['ascensions']-=Dc.ascension['ascension_mps_upgrade_price']
+            Dc.ascension['ascension_mps_upgrade']+=1
+            Dc.ascension['ascension_mps_upgrade_price']=Dc.ascension['ascension_mps_upgrade']+1
+            if Dc.ascension['ascension_mps_upgrade'] <= 10:
+                ascension_dict['ascension upg2'].configure(text=f"you have {Dc.ascension['ascension_mps_upgrade']} of this \n this will cost {Dc.ascension['ascension_mps_upgrade_price']}\n this gives a {1+(Dc.ascension['ascension_mps_upgrade']/5)}x boost to mpc")
+                ascension_dict['ascension upg2'].update()
+            if Dc.ascension['ascension_mps_upgrade'] == 10:
+                ascension_dict['ascension upg2'].configure(text=f"you have the\n max amount of this\n this gives a 3x boost to mps")
+                ascension_dict['ascension upg2'].update()
+    ascension_dict['ascension_count'].configure(text=f"you have {Dc.ascension['ascensions']} ascension points available")
+    ascension_dict['ascension_count'].update()
     recalculate_mpc_mps('mpc')
     recalculate_mpc_mps('mps')    
 
@@ -453,7 +453,30 @@ def rebirthing():
     }
     research_world()
 
-
+def ascending():
+    Dc.money['money']=0
+    Dc.money_per_click['mpc'] = 1
+    Dc.money_per_click['mpc_count'] = 1
+    Dc.money_per_click['mpc_cost'] = 15
+    Dc.money_per_click['mpc_multiplier'] = 1
+    Dc.money_per_second['mps']= 0
+    Dc.money_per_second['mps_cost'] = 100
+    Dc.money_per_second['mps_multiplier'] = 1
+    Dc.money_per_second['mps_count'] = 0
+    Dc.research['research'] = 0
+    Dc.research['research_total'] = 0
+    Dc.research['research_price'] = (10**4)
+    Dc.research['research_mpc_upgrade']=0
+    Dc.research['research_mps_upgrade']=0
+    Dc.research['research_mpc_upgrade_price']=1
+    Dc.research['research_mps_upgrade_price']=1
+    Dc.upgrade_flags = {
+    'click_active': [False,False,False,False],
+    'click_bought': [False,False,False,False],
+    'auto_active': [False,False,False,False],
+    'auto_bought': [False,False,False,False],
+    }
+    ascension_world()
 
 
 menu_options = ["Clicker", "Shop","Stats_page","the casino"] 
@@ -475,19 +498,19 @@ warp= tk.PhotoImage(file="Assets/warp hole.png")
 pixelVirtual = tk.PhotoImage(width=1, height=1)
 
 
-legacy_dict = {
+ascension_dict = {
     'leg_bg' : tk.Label(window,height=1080,width=1920,background="#d88b1e",image=pixelVirtual),
-    'legacy upg1': tk.Button(window,image=pixelVirtual,width=175,height=75,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.legacy['legacy_mps_upgrade']} of this \n this will cost {Dc.legacy['legacy_mpc_upgrade_price']}\n this gives a {1+(Dc.legacy['legacy_mps_upgrade']/5)}x boost to mpc",compound="center",command=lambda:lupers(1)),
-    'legacy upg2': tk.Button(window,image=pixelVirtual,width=175,height=75,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.legacy['legacy_mps_upgrade']} of this \n this will cost {Dc.legacy['legacy_mps_upgrade_price']}\n this gives a {1+(Dc.legacy['legacy_mps_upgrade']/5)}x boost to mps",compound="center",command=lambda:lupers(2)),
-    'legacy_count': tk.Label(window,image=pixelVirtual,width=300,height=75,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.legacy['legacies']} points available to spend.",compound="center"),
+    'ascension upg1': tk.Button(window,image=pixelVirtual,width=175,height=75,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.ascension['ascension_mps_upgrade']} of this \n this will cost {Dc.ascension['ascension_mpc_upgrade_price']}\n this gives a {1+(Dc.ascension['ascension_mps_upgrade']/5)}x boost to mpc",compound="center",command=lambda:lupers(1)),
+    'ascension upg2': tk.Button(window,image=pixelVirtual,width=175,height=75,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.ascension['ascension_mps_upgrade']} of this \n this will cost {Dc.ascension['ascension_mps_upgrade_price']}\n this gives a {1+(Dc.ascension['ascension_mps_upgrade']/5)}x boost to mps",compound="center",command=lambda:lupers(2)),
+    'ascension_count': tk.Label(window,image=pixelVirtual,width=300,height=75,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.ascension['ascensions']} points available to spend.",compound="center"),
     'research return': tk.Button(window,image=pixelVirtual,width=200,height=100,background="#8C8383",foreground="#000000",font=('Helvetica', 8),text="click to return",compound="center",command=lambda:returning("Clicker"))
 }   
 
-legacy_dict_positions = {
+ascension_dict_positions = {
     'leg_bg' : {"x":0,"y":0},
-    'legacy upg1': {"x":300,"y":500},
-    'legacy upg2': {"x":600,"y":500},
-    'legacy_count': {"x":400,"y":100},
+    'ascension upg1': {"x":300,"y":500},
+    'ascension upg2': {"x":600,"y":500},
+    'ascension_count': {"x":400,"y":100},
     'research return': {"x":800,"y":0}
 }
 
@@ -508,9 +531,6 @@ research_dict_positions = {
     'research return': {"x":800,"y":0}
 }
 
-#    ['legacy'] = tk.Button(window,image=pixelVirtual,width=250,height=50,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.legacy['legacies']} legacies available",compound="center",command=lambda:legacy_world()),
-#    'legacy' : {"x":0,"y":50},
-
 clicker_dict = {
     'click' : tk.Button(window, height=50,width=200,image=pixelVirtual, borderwidth=10, background="#000000", command= lambda : money_gain(Dc.money_per_click['mpc'])),
     'money':tk.Label(window,image=pixelVirtual,height=50,width=len(str(Dc.money['money']))*26,text=Dc.money['money'],font=('Helvetica', 30),foreground="#000000",fg="#000000", background="#FFFFFF", compound='center'),
@@ -524,8 +544,6 @@ clicker_dict_positions = {
     'income': {"x":360,"y": 220},                
     'research': {"x":0,"y": 0}
 }
-
-#clicker_dict_positions['legacy'] = {"x":0,"y":50}
 
 Shop_dict = {
     'upgrades': tk.Label(window,image = pixelVirtual,height=1000,width=400,background="#878383",foreground="#000000"),
@@ -617,7 +635,9 @@ widgets['auto 100'] = tk.Button(window,image=auto4,command=lambda: upgrade(8))
 widgets["DOLLA"] = tk.Button(window,image=dollar,background="#000000",command=lambda: activate_capitalist_boost())
 widgets['realm1'] = tk.Button(window,image=warp,command=lambda:realm_change())
 widgets["roulette"] = tk.Button(window,image=pixelVirtual,text="roulette",background="#ffffff",foreground="#000000",borderwidth=10,font=('Helvetica', 30),height=50,width=200, compound='center',command = lambda:start_roulette())
-widgets["confirmation"] = tk.Button(window,image=pixelVirtual,text=f"confirm rebirth \n you will recieve {Dc.research['research']} points",background="#ffffff",foreground="#000000",borderwidth=10,font=('Helvetica',20),height=100,width=400,compound='center',command= lambda:rebirthing())
+widgets['rebirth_confirmation'] = tk.Button(window,image=pixelVirtual,text=f"confirm rebirth \n you will recieve {Dc.research['research']} points",background="#ffffff",foreground="#000000",borderwidth=10,font=('Helvetica',20),height=100,width=400,compound='center',command= lambda:rebirthing())
+widgets['ascension_confirmation'] = tk.Button(window,image=pixelVirtual,text=f"confirm ascnension \n you will recieve {Dc.ascension['ascensions']} points",background="#ffffff",foreground="#000000",borderwidth=10,font=('Helvetica',20),height=100,width=400,compound='center',command= lambda:ascending())
+
 
 def checkifnumber():
     x=roulette_dict['gambmon'].get("1.0","end")
@@ -662,10 +682,10 @@ def change_menu(var, index, mode):
         for item in realm_dict:
             realm_dict[item].place(x=realm_dict_positions[item]["x"],y=realm_dict_positions[item]["y"])
 
-    elif menu_var.get() == 'legacy':
+    elif menu_var.get() == 'ascension':
 
-        for item in legacy_dict:
-            legacy_dict[item].place(x=legacy_dict_positions[item]["x"],y=legacy_dict_positions[item]["y"])
+        for item in ascension_dict:
+            ascension_dict[item].place(x=ascension_dict_positions[item]["x"],y=ascension_dict_positions[item]["y"])
 
     elif menu_var.get() == 'research':
 
@@ -679,8 +699,12 @@ def change_menu(var, index, mode):
             roulette_dict[item].place(x=roulette_dict_positions[item]["x"],y=roulette_dict_positions[item]["y"])
 
     elif menu_var.get() == 'rebirth confirmation':
-        widgets['confirmation'].place(x=300,y=500)
+        widgets['rebirth_confirmation'].place(x=300,y=500)
+        widgets["menu"].place_forget()
 
+    elif menu_var.get() == 'ascension confirmation':
+        widgets['ascension_confirmation'].place(x=300,y=500)
+        widgets["menu"].place_forget()
 
 menu_var.trace_add('write', change_menu)
 
@@ -703,10 +727,10 @@ def universal_update():
     monlen()
     realm_check()
     if rebirth == 1:
-        clicker_dict_positions['legacy'] = {"x":0,"y":50}
-        clicker_dict['legacy'] = tk.Button(window,image=pixelVirtual,width=250,height=50,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.legacy['legacies']} legacies available",compound="center",command=lambda:legacy_world())
+        clicker_dict_positions['ascension'] = {"x":0,"y":50}
+        clicker_dict['ascension'] = tk.Button(window,image=pixelVirtual,width=250,height=50,font=('Helvetica', 10),foreground="#000000",background="#C49D49",text=f"you have {Dc.ascension['ascensions']} ascensions available",compound="center",command=lambda:menu_var.set('ascension confirmation'))
     if rebirth > 0:
-        legacy_check()
+        ascension_check()
     research_check()
     window.after(universal_delay,universal_update)
 if count==0:

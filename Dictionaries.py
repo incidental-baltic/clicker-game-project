@@ -51,21 +51,21 @@ realms = {
 research = {
     'research_total': 0,
     'research_price': (10**4),
-    'research': 5,
+    'research': 1,
     'research_mpc_upgrade':0,
     'research_mps_upgrade':0,
     'research_mpc_upgrade_price':1,
     'research_mps_upgrade_price':1
 }
 
-legacy  = {
-    'legacy_total' : 0,
-    'legacy_price' : (10**12),
-    'legacies' : 0,
-    'legacy_mps_upgrade': 0,
-    'legacy_mpc_upgrade_price': 1,
-    'legacy_mps_upgrade': 0,
-    'legacy_mps_upgrade_price' : 1
+ascension  = {
+    'ascension_total' : 0,
+    'ascension_price' : (10**12),
+    'ascensions' : 1,
+    'ascension_mps_upgrade': 0,
+    'ascension_mpc_upgrade_price': 1,
+    'ascension_mps_upgrade': 0,
+    'ascension_mps_upgrade_price' : 1
 }
 
 money = {
